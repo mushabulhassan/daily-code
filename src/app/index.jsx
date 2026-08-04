@@ -11,6 +11,7 @@ const App = () => {
   const [data, setdata] = useState("");
 
   function handleLogin() {
+    // The trim() method removes whitespace from both ends of a string. It does not change the original string.
     if (!name.trim || !email || !password) {
       setLoginMessage("All the Input Fields Are Required ");
       setdata("");
