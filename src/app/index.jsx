@@ -1,12 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View
-} from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 const App = () => {
   const [name, setName] = useState("");
@@ -20,16 +14,19 @@ const App = () => {
     if (!name.trim || !email || !password) {
       setLoginMessage("All the Input Fields Are Required ");
       setdata("");
+      // It will return the lower Output Only if the above condition is true and the below code will not execute
       return;
     }
     setdata(
+      // This will display the user's input data
       `Your Data: \n name: ${name}\n Email:   ${email}\n Password: ${password} `,
     );
     {
+      // This will display the welcome message with the user's name or "Guest" if the name is empty
       setLoginMessage(`Welcome ${name || "Guest"}! You are logged in ✅`);
     }
   }
-
+  // This function will reset the input fields and clear the login message
   function reset() {
     setemail("");
     setName("");
@@ -46,7 +43,6 @@ const App = () => {
       }}
     >
       <Text style={styles.text}>App Logo 🤑</Text>
-
       <Text
         style={{
           color: "green",
@@ -57,7 +53,7 @@ const App = () => {
       >
         Submit Your Information
       </Text>
-
+      {/* // This is the input field for the user's name */}
       {/* NAME INPUT */}
       <TextInput
         style={styles.Input}
@@ -66,6 +62,7 @@ const App = () => {
         value={name}
         onChangeText={(input) => setName(input)}
       />
+      {/* // This is the input field for the user's email */}
       {/* Email Input  */}
       <TextInput
         style={styles.Input}
@@ -76,7 +73,8 @@ const App = () => {
         value={email}
         onChangeText={(input) => setemail(input)}
       />
-
+      {/* // This is the input field for the user's password with an eye icon to */}
+      {/* toggle visibility */}
       {/* PASSWORD INPUT WITH EYE ICON INSIDE */}
       <View style={styles.passwordContainer}>
         <TextInput
@@ -92,6 +90,7 @@ const App = () => {
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           style={styles.eyeIcon}
         >
+          {/* // This is the eye icon that toggles the visibility of the password */}
           <Ionicons
             name={showPassword ? "eye" : "eye-off"}
             size={22}
@@ -99,7 +98,6 @@ const App = () => {
           />
         </Pressable>
       </View>
-
       {/* LOGIN BUTTON */}
       <Pressable
         style={({ pressed }) => [
@@ -111,25 +109,30 @@ const App = () => {
           handleLogin();
         }}
       >
+        {/* // This is the text inside the login button */}
         <Text style={styles.buttonText}> User-LogIn</Text>
       </Pressable>
-      <Pressable onPress={reset} hitSlop={45} >
+      <Pressable onPress={reset} hitSlop={45}>
         <Text style={styles.button1}>Reset</Text>
       </Pressable>
-
+      {/* // This is where the login message will be displayed after the user logs */}
+      {/* in */}
       {/* MESSAGE SHOWS HERE AFTER LOGIN */}
+      {/* // This will display the login message if it exists, otherwise it will */}
+      {/* // display nothing */}
       {loginMessage ? (
         <Text style={styles.successMessage}>{loginMessage}</Text>
       ) : null}
+      {/* // This will display the user's input data if the name exists, otherwise */}
+      {/* // it will display nothing */}
       {name ? <Text>{data}</Text> : null}
-
       <Text style={styles.successMessage}>{data}</Text>
     </View>
   );
 };
 
 export default App;
-
+// This is the stylesheet for the app
 const styles = StyleSheet.create({
   text: {
     color: "blue",
