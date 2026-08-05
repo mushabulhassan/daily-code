@@ -1,7 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View ,Image, ImageBackground} from "react-native";
-import logo from '../../assets/images/react-logo.png'
+import {
+  Image,
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import logo from "../../assets/images/react-logo.png";
+import logo1 from "../../assets/images/android-icon-foreground.png";
+import logo2 from "../../assets/images/logo-glow.png";
 const App = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +36,6 @@ const App = () => {
       // This will display the welcome message with the user's name or "Guest" if the name is empty
       setLoginMessage(`Welcome ${name || "Guest"}! You are logged in ✅`);
     }
-
   }
   // This function will reset the input fields and clear the login message
   function reset() {
@@ -35,117 +44,127 @@ const App = () => {
     setPassword("");
   }
   return (
-    <ImageBackground source={logo} resizeMode="cover" style={{flex:1,width:'100%',height:'100%'}}>
-    <View
-      style={{
-        flex:1,
-        alignItems:'center',
-        borderWidth: 5,
-        backgroundColor: "rgba(0,0,0,0.3)",
-        padding:20,
-        
-        borderRadius: 5,
-        
-      }}
+    <ImageBackground
+      source={logo2}
+      resizeMode="cover"
+      style={{ flex: 1, width: "100%", height: "100%" }}
     >
-      
-    <View style={{flexDirection:'row'}}>
-      <Image source={logo} style={{width:50, height:60,alignSelf:'center', resizeMode:'contain'}}/>
-      <Text style={styles.text}>Learn React-Native</Text>
-      
-      </View>
-      <Text
+      <View
         style={{
-          color: "green",
-          fontSize: 20,
-          textAlign: "center",
-          marginTop: 10,
+          flex: 1,
+          alignItems: "center",
+          borderWidth: 5,
+          backgroundColor: "rgba(0,0,0,0.3)",
+          padding: 20,
+
+          borderRadius: 5,
         }}
       >
-        Submit Your Information
-      </Text>
-      {/* // This is the input field for the user's name */}
-      {/* NAME INPUT */}
-      <TextInput
-        style={styles.Input}
-        placeholder="Enter your name..."
-        secureTextEntry={false}
-        autoCapitalize="none"
-        value={name}
-        onChangeText={(input) => setName(input)}
-      />
-
-      {/* // This is the input field for the user's email */}
-      {/* Email Input  */}
-      <TextInput
-        style={styles.Input}
-        placeholder="Enter Your Email"
-        keyboardType="email"
-        textContentType="email"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={(input) => setemail(input)}
-      />
-      {/* // This is the input field for the user's password with an eye icon to */}
-      {/* toggle visibility */}
-      {/* PASSWORD INPUT WITH EYE ICON INSIDE */}
-      {/* <View style={styles.passwordContainer}> */}
-      <View style={styles.passwordContainer}>
-        <TextInput
-          style={styles.passwordInput}
-          placeholder="Enter your password here."
-          autoCapitalize="none"
-          secureTextEntry={showPassword}
-          value={password}
-          onChangeText={(input) => setPassword(input)}
-        />
-        <Pressable
-          onPress={() => setShowPassword(!showPassword)}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          style={styles.eyeIcon}
-        >
-          {/* // This is the eye icon that toggles the visibility of the password */}
-          <Ionicons
-            name={showPassword ? "eye" : "eye-off"}
-            size={22}
-            color="#666"
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            source={logo1}
+            style={{
+              width: 60,
+              height: 60,
+              alignSelf: "center",
+              resizeMode: "contain",
+              marginTop:30,
+            }}
           />
-        </Pressable>
-        {/* </View> */}
-      </View>
-      {/* LOGIN BUTTON */}
-      <View>
-        <Pressable
-          style={({ pressed }) => [
-            styles.button1,
-            pressed && styles.buttonPressed,
-          ]}
-          onPress={() => {
-            reset();
-            handleLogin();
+          <Text style={styles.text}>Learn React-Native</Text>
+        </View>
+        <Text
+          style={{
+            color: "green",
+            fontSize: 20,
+            textAlign: "center",
+            marginTop: 10,
           }}
         >
-          {/* // This is the text inside the login button */}
-          <Text style={[styles.buttonText, { flex: 1 }]}>LogIn</Text>
-        </Pressable>
-        <Pressable onPress={reset} hitSlop={45}>
-          <Text style={styles.button1}>Reset</Text>
-        </Pressable>
+          Submit Your Information
+        </Text>
+        {/* // This is the input field for the user's name */}
+        {/* NAME INPUT */}
+        <TextInput
+          style={styles.Input}
+          placeholder="Enter your name..."
+          secureTextEntry={false}
+          autoCapitalize="none"
+          value={name}
+          onChangeText={(input) => setName(input)}
+        />
+
+        {/* // This is the input field for the user's email */}
+        {/* Email Input  */}
+        <TextInput
+          style={styles.Input}
+          placeholder="Enter Your Email"
+          keyboardType="email"
+          textContentType="email"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={(input) => setemail(input)}
+        />
+        {/* // This is the input field for the user's password with an eye icon to */}
+        {/* toggle visibility */}
+        {/* PASSWORD INPUT WITH EYE ICON INSIDE */}
+        {/* <View style={styles.passwordContainer}> */}
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Enter your password here."
+            autoCapitalize="none"
+            secureTextEntry={showPassword}
+            value={password}
+            onChangeText={(input) => setPassword(input)}
+          />
+          <Pressable
+            onPress={() => setShowPassword(!showPassword)}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            style={styles.eyeIcon}
+          >
+            {/* // This is the eye icon that toggles the visibility of the password */}
+            <Ionicons
+              name={showPassword ? "eye" : "eye-off"}
+              size={22}
+              color="#666"
+            />
+          </Pressable>
+          {/* </View> */}
+        </View>
+        {/* LOGIN BUTTON */}
+        <View>
+          <Pressable
+            style={({ pressed }) => [
+              styles.button1,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={() => {
+              reset();
+              handleLogin();
+            }}
+          >
+            {/* // This is the text inside the login button */}
+            <Text style={[styles.buttonText, { flex: 1 }]}>LogIn</Text>
+          </Pressable>
+          <Pressable onPress={reset} hitSlop={45}>
+            <Text style={styles.button1}>Reset</Text>
+          </Pressable>
+        </View>
+
+        {/* // This is where the login message will be displayed after the user logs */}
+        {/* in */}
+        {/* MESSAGE SHOWS HERE AFTER LOGIN */}
+        {/* // This will display the login message if it exists, otherwise it will */}
+        {/* // display nothing */}
+        {loginMessage ? (
+          <Text style={styles.successMessage}>{loginMessage}</Text>
+        ) : null}
+        {/* // This will display the user's input data if the name exists, otherwise */}
+        {/* // it will display nothing */}
+        {name ? <Text>{data}</Text> : null}
+        <Text style={styles.successMessage}>{data}</Text>
       </View>
-    
-      {/* // This is where the login message will be displayed after the user logs */}
-      {/* in */}
-      {/* MESSAGE SHOWS HERE AFTER LOGIN */}
-      {/* // This will display the login message if it exists, otherwise it will */}
-      {/* // display nothing */}
-      {loginMessage ? (
-        <Text style={styles.successMessage}>{loginMessage}</Text>
-      ) : null}
-      {/* // This will display the user's input data if the name exists, otherwise */}
-      {/* // it will display nothing */}
-      {name ? <Text>{data}</Text> : null}
-      <Text style={styles.successMessage}>{data}</Text>
-    </View>
     </ImageBackground>
   );
 };
