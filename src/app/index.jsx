@@ -49,8 +49,11 @@ const App = () => {
       }}
     >
       
-    
-      <Text style={styles.text}>Learn R-N with-Us<Image source={logo} style={{width:80, height:80,alignSelf:'center', marginBottom:0.1,}}/></Text>
+    <View style={{flexDirection:'row'}}>
+      <Image source={logo} style={{width:50, height:60,alignSelf:'center', resizeMode:'contain'}}/>
+      <Text style={styles.text}>Learn React-Native</Text>
+      
+      </View>
       <Text
         style={{
           color: "green",
