@@ -77,6 +77,7 @@ const App = () => {
       {/* // This is the input field for the user's password with an eye icon to */}
       {/* toggle visibility */}
       {/* PASSWORD INPUT WITH EYE ICON INSIDE */}
+      {/* <View style={styles.passwordContainer}> */}
       <View style={styles.passwordContainer}>
         <TextInput
           style={styles.passwordInput}
@@ -98,24 +99,27 @@ const App = () => {
             color="#666"
           />
         </Pressable>
+        {/* </View> */}
       </View>
       {/* LOGIN BUTTON */}
-      <Pressable
-        style={({ pressed }) => [
-          styles.button1,
-          pressed && styles.buttonPressed,
-        ]}
-        onPress={() => {
-          reset();
-          handleLogin();
-        }}
-      >
-        {/* // This is the text inside the login button */}
-        <Text style={styles.buttonText}> User-LogIn</Text>
-      </Pressable>
-      <Pressable onPress={reset} hitSlop={45}>
-        <Text style={styles.button1}>Reset</Text>
-      </Pressable>
+      <View styles={styles.flex}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.button1,
+            pressed && styles.buttonPressed,
+          ]}
+          onPress={() => {
+            reset();
+            handleLogin();
+          }}
+        >
+          {/* // This is the text inside the login button */}
+          <Text style={styles.buttonText}> User-LogIn</Text>
+        </Pressable>
+        <Pressable onPress={reset} hitSlop={45}>
+          <Text style={styles.button1}>Reset</Text>
+        </Pressable>
+      </View>
       {/* // This is where the login message will be displayed after the user logs */}
       {/* in */}
       {/* MESSAGE SHOWS HERE AFTER LOGIN */}
@@ -180,7 +184,8 @@ const styles = StyleSheet.create({
     transform: [{ scale: 4 }], // this mean the size change at on pres of button
   },
   button1: {
-    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
     backgroundColor: "green",
     fontSize: 20,
     marginTop: 20,
@@ -197,5 +202,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 15,
     fontWeight: "600",
+  },
+  flex: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginLeft: 55,
+    marginRight: 55,
   },
 });
