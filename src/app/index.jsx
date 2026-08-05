@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-
+import { Pressable, StyleSheet, Text, TextInput, View ,Image, ImageBackground} from "react-native";
+import logo from '../../assets/images/react-logo.png'
 const App = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -26,6 +26,7 @@ const App = () => {
       // This will display the welcome message with the user's name or "Guest" if the name is empty
       setLoginMessage(`Welcome ${name || "Guest"}! You are logged in ✅`);
     }
+
   }
   // This function will reset the input fields and clear the login message
   function reset() {
@@ -34,16 +35,22 @@ const App = () => {
     setPassword("");
   }
   return (
+    <ImageBackground source={logo} resizeMode="cover" style={{flex:1,width:'100%',height:'100%'}}>
     <View
       style={{
-        flex: 1,
+        flex:1,
+        alignItems:'center',
         borderWidth: 5,
-        borderColor: "purple",
+        backgroundColor: "rgba(0,0,0,0.3)",
+        padding:20,
+        
         borderRadius: 5,
-        backgroundColor: "lightblue",
+        
       }}
     >
-      <Text style={styles.text}>App Logo 🤑</Text>
+      
+    
+      <Text style={styles.text}>Learn R-N with-Us<Image source={logo} style={{width:80, height:80,alignSelf:'center', marginBottom:0.1,}}/></Text>
       <Text
         style={{
           color: "green",
@@ -59,10 +66,12 @@ const App = () => {
       <TextInput
         style={styles.Input}
         placeholder="Enter your name..."
+        secureTextEntry={false}
         autoCapitalize="none"
         value={name}
         onChangeText={(input) => setName(input)}
       />
+
       {/* // This is the input field for the user's email */}
       {/* Email Input  */}
       <TextInput
@@ -102,7 +111,7 @@ const App = () => {
         {/* </View> */}
       </View>
       {/* LOGIN BUTTON */}
-      <View styles={styles.flex}>
+      <View>
         <Pressable
           style={({ pressed }) => [
             styles.button1,
@@ -114,12 +123,13 @@ const App = () => {
           }}
         >
           {/* // This is the text inside the login button */}
-          <Text style={styles.buttonText}> User-LogIn</Text>
+          <Text style={[styles.buttonText, { flex: 1 }]}>LogIn</Text>
         </Pressable>
         <Pressable onPress={reset} hitSlop={45}>
           <Text style={styles.button1}>Reset</Text>
         </Pressable>
       </View>
+    
       {/* // This is where the login message will be displayed after the user logs */}
       {/* in */}
       {/* MESSAGE SHOWS HERE AFTER LOGIN */}
@@ -133,6 +143,7 @@ const App = () => {
       {name ? <Text>{data}</Text> : null}
       <Text style={styles.successMessage}>{data}</Text>
     </View>
+    </ImageBackground>
   );
 };
 
@@ -140,7 +151,7 @@ export default App;
 // This is the stylesheet for the app
 const styles = StyleSheet.create({
   text: {
-    color: "blue",
+    color: "navy",
     fontSize: 25,
     marginTop: 40,
     textAlign: "center",
