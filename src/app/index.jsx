@@ -1,19 +1,13 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  StyleSheet,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 // import logo from '../../assets/images/react-logo@3x.png'
 export default function App() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [course, setCourse] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [course, setCourse] = useState("");
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Student Registration</Text>
@@ -28,7 +22,7 @@ export default function App() {
           onChangeText={setName}
           style={styles.input}
         />
-        <Ionicons style={{color:'red'}} size={25} name='eye-off'/>
+        <Ionicons style={{ color: "red" }} size={25} name="eye-off" />
       </View>
       {/* Email */}
       <Text style={styles.label}>Email Address</Text>
@@ -41,6 +35,11 @@ export default function App() {
           onChangeText={setEmail}
           style={styles.input}
         />
+      </View>
+      <Text style={styles.label}>Enter Password</Text>
+      <View style={styles.inputContainer}>
+        <Ionicons name="lock-closed-outline" size={24} color="#6C3DD1" />
+        <TextInput style={styles.input} placeholder="Enter The Password" />
       </View>
       {/* Phone */}
       <Text style={styles.label}>Phone Number</Text>
@@ -75,25 +74,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 40,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   heading: {
     fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 30,
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
     marginTop: 10,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 10,
     paddingHorizontal: 12,
     height: 55,
@@ -105,15 +104,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#6C3DD1',
+    backgroundColor: "#6C3DD1",
     padding: 15,
     borderRadius: 10,
     marginTop: 20,
   },
   buttonText: {
-    color: '#fff',
-    textAlign: 'center',
+    color: "#fff",
+    textAlign: "center",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
