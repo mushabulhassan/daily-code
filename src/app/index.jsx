@@ -2,6 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import logo from '../../assets/images/logo-glow.png'
+import { ImageBackground } from "expo-image";
 // import logo from '../../assets/images/react-logo@3x.png'
 export default function App() {
   const [name, setName] = useState("");
@@ -13,6 +15,7 @@ export default function App() {
     hide==true?(sethide(false)):sethide(true)
   }
   return (
+    <ImageBackground source={logo} style={{flex:1,height:'100%',width:'100%' ,justifyContent:'center',display:'flex'}}>
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Student Registration</Text>
       {/* Name */}
@@ -73,15 +76,20 @@ export default function App() {
         <Text style={styles.buttonText}>Submit</Text>
       </Pressable>
       
-
     </SafeAreaView>
+    </ImageBackground>
   );
 }
 const styles = StyleSheet.create({
   container: {
+    justifyContent:'center',
+    display:'flex',
+    alignContent:'center',
     flex: 1,
-    padding: 40,
-    backgroundColor: "#fff",
+    padding: 20,
+    backgroundColor: (0,0,0,0.3),
+    borderWidth:2,
+    borderColor:'black',
   },
   heading: {
     fontSize: 28,
