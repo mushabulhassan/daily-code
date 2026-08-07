@@ -1,254 +1,119 @@
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import React, { useState } from 'react';
 import {
-  Image,
-  ImageBackground,
-  Pressable,
-  ScrollView,
-  StyleSheet,
+  View,
   Text,
   TextInput,
-  View,
-} from "react-native";
-import logo1 from "../../assets/images/android-icon-foreground.png";
-import logo3 from "../../assets/images/expo-badge-white.png";
-import logo2 from "../../assets/images/logo-glow.png";
-// import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
-const App = () => {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(true);
-  const [loginMessage, setLoginMessage] = useState("");
-  const [email, setemail] = useState("");
-  const [data, setdata] = useState("");
-
-  function handleLogin() {
-    // The trim() method removes whitespace from both ends of a string. It does not change the original string.
-    if (!name.trim || !email || !password) {
-      setLoginMessage("All the Input Fields Are Required ");
-      setdata("");
-      // It will return the lower Output Only if the above condition is true and the below code will not execute
-      return;
-    }
-    setdata(
-      // This will display the user's input data
-      `Your Data: \n name: ${name}\n Email:   ${email}\n Password: ${password} `,
-    );
-    {
-      // This will display the welcome message with the user's name or "Guest" if the name is empty
-      setLoginMessage(`Welcome ${name || "Guest"}! You are logged in ✅`);
-    }
-  }
-  // This function will reset the input fields and clear the login message
-  function reset() {
-    setemail("");
-    setName("");
-    setPassword("");
-    setdata("");
-    setLoginMessage("");
-  }
+  Pressable,
+  StyleSheet,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+// import logo from '../../assets/images/react-logo@3x.png'
+export default function App() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [course, setCourse] = useState('');
   return (
-      <ImageBackground
-        source={logo2}
-        resizeMode="cover"
-        style={{ flex: 1, width: "100%", height: "100%" }}
-        >
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            borderWidth: 5,
-            backgroundColor: "rgba(0,0,0,0.3)",
-            padding: 20,
-            borderRadius: 5,   
-          }}>
-        
-          <View style={{ flexDirection: "row" }}>
-            <Image
-              source={logo1}
-              style={{
-                width: 60,
-                height: 60,
-                alignSelf: "center",
-                resizeMode: "contain",
-                marginTop: 30,
-              }} />
-            <Text style={styles.text}>Learn React-Native</Text>
-          </View>
-
-          <Text
-            style={{
-              color: "green",
-              fontSize: 20,
-              textAlign: "center",
-              marginTop: 10,
-            }}
-          >
-            Submit Your Information
-          </Text>
-          {/* // This is the input field for the user's name */}
-          {/* NAME INPUT */}
-          <TextInput
-            style={styles.Input}
-            placeholder="Enter your name..."
-            secureTextEntry={false}
-            autoCapitalize="none"
-            value={name}
-            onChangeText={(input) => setName(input)}
-          />
-
-          {/* // This is the input field for the user's email */}
-          {/* Email Input  */}
-          <TextInput
-            style={styles.Input}
-            placeholder="Enter Your Email"
-            keyboardType="email"
-            textContentType="email"
-            autoCapitalize="none"
-            value={email}
-            onChangeText={(input) => setemail(input)}
-          />
-          {/* // This is the input field for the user's password with an eye icon to */}
-          {/* toggle visibility */}
-          {/* PASSWORD INPUT WITH EYE ICON INSIDE */}
-          {/* <View style={styles.passwordContainer}> */}
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.passwordInput}
-              placeholder="Enter your password here."
-              autoCapitalize="none"
-              secureTextEntry={showPassword}
-              value={password}
-              onChangeText={(input) => setPassword(input)}
-            />
-            <Pressable
-              onPress={() => setShowPassword(!showPassword)}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-              style={styles.eyeIcon}
-            >
-              {/* // This is the eye icon that toggles the visibility of the password */}
-              <Ionicons
-                name={showPassword ? "eye" : "eye-off"}
-                size={22}
-                color="#666"
-              />
-            </Pressable>
-            {/* </View> */}
-          </View>
-          {/* LOGIN BUTTON */}
-          <View>
-            {/* <Image source={logo4}/> */}
-            <Pressable
-              style={({ pressed }) => [
-                styles.button1,
-                pressed && styles.buttonPressed,
-              ]}
-              onPress={() => {
-                reset();
-                handleLogin();
-              }}
-            >
-              {/* // This is the text inside the login button */}
-              <Text style={[styles.buttonText, { flex: 1 }]}>LogIn</Text>
-            </Pressable>
-          </View>
-          <Pressable onPress={reset} hitSlop={45}>
-            <Text style={styles.button1}>Reset</Text>
-          </Pressable>
-
-          {/* // This is where the login message will be displayed after the user logs */}
-          {/* in */}
-          {/* MESSAGE SHOWS HERE AFTER LOGIN */}
-          {/* // This will display the login message if it exists, otherwise it will */}
-          {/* // display nothing */}
-          {loginMessage ? (
-            <Text style={styles.successMessage}>{loginMessage}</Text>
-          ) : null}
-          {/* // This will display the user's input data if the name exists, otherwise */}
-          {/* // it will display nothing */}
-          {name ? <Text>{data}</Text> : null}
-          <Text style={styles.successMessage}>{data}</Text>
-          
-            <Image source={logo3} />
-          
-        </View>
-      
-      </ImageBackground>
-  
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.heading}>Student Registration</Text>
+      {/* Name */}
+      {/* <Image source={logo}/> */}
+      <Text style={styles.label}>Full Name</Text>
+      <View style={styles.inputContainer}>
+        <Ionicons name="person-outline" size={24} color="#6C3DD1" />
+        <TextInput
+          placeholder="Enter your full name"
+          value={name}
+          onChangeText={setName}
+          style={styles.input}
+        />
+        <Ionicons style={{color:'red'}} size={25} name='eye-off'/>
+      </View>
+      {/* Email */}
+      <Text style={styles.label}>Email Address</Text>
+      <View style={styles.inputContainer}>
+        <Ionicons name="mail-outline" size={24} color="#6C3DD1" />
+        <TextInput
+          placeholder="Enter your email"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+          style={styles.input}
+        />
+      </View>
+      {/* Phone */}
+      <Text style={styles.label}>Phone Number</Text>
+      <View style={styles.inputContainer}>
+        <Ionicons name="call-outline" size={20} color="green" />
+        <TextInput
+          placeholder="Enter your phone number"
+          keyboardType="phone-pad"
+          value={phone}
+          onChangeText={setPhone}
+          style={styles.input}
+        />
+      </View>
+      {/* Course */}
+      <Text style={styles.label}>Course</Text>
+      <View style={styles.inputContainer}>
+        <Ionicons name="school-outline" size={24} color="#6C3DD1" />
+        <TextInput
+          placeholder="Enter your course"
+          value={course}
+          onChangeText={setCourse}
+          style={styles.input}
+        />
+      </View>
+      <Pressable style={styles.button}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </Pressable>
+    </SafeAreaView>
   );
-};
-
-export default App;
-// This is the stylesheet for the app
+}
 const styles = StyleSheet.create({
-  text: {
-    color: "navy",
-    fontSize: 25,
-    marginTop: 40,
-    textAlign: "center",
-  },
-  Input: {
-    margin: 20,
-    padding: 15,
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor: "purple",
-    borderRadius: 8,
-    backgroundColor: "white",
-  },
-  passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    margin: 20,
-    marginTop: 0,
-    borderWidth: 1,
-    borderColor: "purple",
-    borderRadius: 8,
-    backgroundColor: "white",
-    paddingRight: 15,
-  },
-  passwordInput: {
+  container: {
     flex: 1,
-    padding: 15,
-    fontSize: 18,
+    padding: 40,
+    backgroundColor: '#fff',
   },
-  eyeIcon: {
-    padding: 5,
+  heading: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    marginTop: 10,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    height: 55,
+    marginBottom: 15,
+  },
+  input: {
+    flex: 1,
+    marginLeft: 10,
+    fontSize: 16,
+  },
+  button: {
+    backgroundColor: '#6C3DD1',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 20,
   },
   buttonText: {
-    color: "white",
-    fontSize: 15,
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  buttonPressed: {
-    opacity: 0.0, // The Button on press Will disappear
-    transform: [{ scale: 4 }], // this mean the size change at on pres of button
-  },
-  button1: {
-    display: "flex",
-    justifyContent: "center",
-    backgroundColor: "green",
-    fontSize: 20,
-    marginTop: 20,
-    borderRadius: 15,
-    padding: 15,
-    margin: 25,
-    marginLeft: 150,
-    marginRight: 150,
-    color: "red",
-  },
-  successMessage: {
-    color: "green",
-    fontSize: 16,
-    textAlign: "center",
-    marginTop: 15,
-    fontWeight: "600",
-  },
-  flex: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginLeft: 55,
-    marginRight: 55,
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
