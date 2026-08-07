@@ -8,6 +8,10 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [course, setCourse] = useState("");
+  const [hide, sethide] = useState(true)
+  function hide1(){
+    hide==true?(sethide(false)):sethide(true)
+  }
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Student Registration</Text>
@@ -36,10 +40,11 @@ export default function App() {
           style={styles.input}
         />
       </View>
-      <Text style={styles.label}>Enter Password</Text>
+      <Text style={styles.label}  >Enter Password</Text>
       <View style={styles.inputContainer}>
-        <Ionicons name="lock-closed-outline" size={24} color="#6C3DD1" />
-        <TextInput style={styles.input} placeholder="Enter The Password" />
+        <Ionicons name="lock-closed-outline"  size={24} color="#6C3DD1" />
+        <TextInput style={styles.input} secureTextEntry={hide} placeholder="Enter The Password" />
+        <Ionicons size={24} on  name={hide ? "eye" : "eye-off"}  color='green' onPress={hide1} />
       </View>
       {/* Phone */}
       <Text style={styles.label}>Phone Number</Text>
@@ -67,6 +72,8 @@ export default function App() {
       <Pressable style={styles.button}>
         <Text style={styles.buttonText}>Submit</Text>
       </Pressable>
+      
+
     </SafeAreaView>
   );
 }
