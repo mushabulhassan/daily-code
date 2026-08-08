@@ -1,22 +1,28 @@
 import { Ionicons } from "@expo/vector-icons";
 import { ImageBackground } from "expo-image";
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  ScrollView
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import logo from "../../assets/images/logo-glow.png";
+import Users from "./user";
 // import logo from '../../assets/images/react-logo@3x.png'
 export default function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [course, setCourse] = useState("");
+
   const [hide, sethide] = useState(true);
   function hide1() {
     hide == true ? sethide(false) : sethide(true);
   }
   return (
     <ImageBackground
-      source={logo}
       style={{
         flex: 1,
         height: "100%",
@@ -26,9 +32,13 @@ export default function App() {
       }}
     >
       <SafeAreaView style={styles.container}>
+       
         <Text style={styles.heading}>Student Registration</Text>
         {/* Name */}
         {/* <Image source={logo}/> */}
+        <Text style={{ fontSize: 26 }}> User's Please enter Your Data </Text>
+        <Text style={{ fontSize: 26 }}> Last Student's Data..</Text>
+        <Users />
         <Text style={styles.label}>Full Name</Text>
         <View style={styles.inputContainer}>
           <Ionicons name="person-outline" size={24} color="#6C3DD1" />
@@ -52,6 +62,7 @@ export default function App() {
             style={styles.input}
           />
         </View>
+
         <Text style={styles.label}>Enter Password</Text>
         <View style={styles.inputContainer}>
           <Ionicons name="lock-closed-outline" size={24} color="#6C3DD1" />
@@ -80,17 +91,7 @@ export default function App() {
             style={styles.input}
           />
         </View>
-        {/* Course */}
-        <Text style={styles.label}>Course</Text>
-        <View style={styles.inputContainer}>
-          <Ionicons name="school-outline" size={24} color="#6C3DD1" />
-          <TextInput
-            placeholder="Enter your course"
-            value={course}
-            onChangeText={setCourse}
-            style={styles.input}
-          />
-        </View>
+
         <Pressable style={styles.button}>
           <Text style={styles.buttonText}>Submit</Text>
         </Pressable>
@@ -104,7 +105,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     borderWidth: 2,
-    borderColor: "black",
+    borderColor: "yellow",
+    marginTop: 20,
   },
   heading: {
     fontSize: 28,
@@ -117,6 +119,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 8,
     marginTop: 10,
+    textAlign: "left",
   },
   inputContainer: {
     flexDirection: "row",
