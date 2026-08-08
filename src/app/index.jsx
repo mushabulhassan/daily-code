@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons  from "@expo/vector-icons";
 import { ImageBackground } from "expo-image";
 import { useState } from "react";
 import {
