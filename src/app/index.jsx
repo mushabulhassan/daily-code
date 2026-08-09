@@ -10,31 +10,44 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 export default function App() {
-  const [input, setinput] = useState("");
-  // 1. State = your list data
+  const [input, setInput] = useState("");
+
   const [items, setItems] = useState([
     { id: "1", name: "Apple" },
     { id: "2", name: "Banana" },
     { id: "3", name: "Mango" },
   ]);
-  // 2. ADD ITEM
-  const addItem = () => { 
+
+  // ADD ITEM
+  const addItem = () => {
+    // Don't add if input is empty
+    if (input.trim() === "") {
+      return;
+    }
+
     const newItem = {
-      id: Date.now().toString(), // unique id
-      name: `${input} ${items.length + 1}`,
+      id: Date.now().toString(),
+      name: input.trim(),
     };
-    setItems([...items, newItem]); // add to end
-    // setItems([newItem, ...items]); // use this to add to start
+
+    setItems([...items, newItem]);
+
+    // Clear input after adding
+    setInput("");
   };
-  // 3. REMOVE ITEM
+
+  // REMOVE ITEM
   const removeItem = (id) => {
     setItems(items.filter((item) => item.id !== id));
   };
-  // 4. Render each item
-  const renderItem = ({ item }) => ( 
+
+  // RENDER ITEM
+  const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
       <Text style={styles.itemText}>{item.name}</Text>
+
       <TouchableOpacity
         style={styles.deleteBtn}
         onPress={() => removeItem(item.id)}
@@ -43,31 +56,37 @@ export default function App() {
       </TouchableOpacity>
     </View>
   );
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{flex:0.5,alignContent:'center',}}>
       <Text style={styles.title}>FlatList Add / Remove</Text>
 
-      
-      <TextInput  
+      <TextInput
         placeholder="Enter the Name:"
-        style={{ fontSize: 24, margin: 12, padding: 20 }}
-        onChangeText={(value) => setinput(value)}
-      /> 
+        style={styles.input}
+        value={input}
+        onChangeText={(value) => setInput(value)}
+      />
+
       <Button title="Add New Item" onPress={addItem} />
-      
+
       <FlatList
         data={items}
-        keyExtractor={(item) => item.id} // must have unique key
+        keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={{ paddingBottom: 20 }}
-        ListEmptyComponent={<Text style={styles.empty}>No items left</Text>}
+        ListEmptyComponent={
+          <Text style={styles.empty}>No items left</Text>
+        }
       />
-      <Pressable style={{ alignItems:'center',}}><Text style={styles.deleteBtn}>Sumbit</Text></Pressable>
-      </View>
+
+      <Pressable style={styles.submitButton}>
+        <Text style={styles.submitText}>Submit</Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -75,12 +94,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     marginTop: 40,
   },
+
   title: {
     fontSize: 22,
     fontWeight: "bold",
     marginBottom: 15,
     textAlign: "center",
   },
+
+  input: {
+    fontSize: 24,
+    margin: 12,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+  },
+
   itemContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -90,23 +120,40 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
     borderRadius: 8,
   },
+
   itemText: {
     fontSize: 16,
   },
+
   deleteBtn: {
     backgroundColor: "red",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 5,
   },
+
   deleteText: {
     color: "#ffffff",
     fontWeight: "bold",
   },
+
   empty: {
     textAlign: "center",
     marginTop: 50,
     fontSize: 16,
     color: "gray",
+  },
+
+  submitButton: {
+    alignItems: "center",
+    padding: 10,
+  },
+
+  submitText: {
+    backgroundColor: "blue",
+    color: "white",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
   },
 });
