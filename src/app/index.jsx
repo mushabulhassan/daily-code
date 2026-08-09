@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Button,
   FlatList,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -45,6 +46,7 @@ export default function App() {
   );
   return (
     <SafeAreaView style={styles.container}>
+      <View style={{flex:0.5,alignContent:'center',}}>
       <Text style={styles.title}>FlatList Add / Remove</Text>
 
       <Button title="Add New Item" onPress={addItem} />
@@ -61,6 +63,8 @@ export default function App() {
         contentContainerStyle={{ paddingBottom: 20 }}
         ListEmptyComponent={<Text style={styles.empty}>No items left</Text>}
       />
+      <Pressable style={{ alignItems:'center',}}><Text style={styles.deleteBtn}>Sumbit</Text></Pressable>
+      </View>
     </SafeAreaView>
   );
 }
