@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 export default function App() {
-  const [input, setinput] = useState("12");
+  const [input, setinput] = useState("");
   // 1. State = your list data
   const [items, setItems] = useState([
     { id: "1", name: "Apple" },
@@ -20,12 +20,11 @@ export default function App() {
   ]);
   // 2. ADD ITEM
   const addItem = () => { 
-    setinput("23");
     const newItem = {
       id: Date.now().toString(), // unique id
-      name: `${"Apple"} ${items.length + 1}`,
+      name: `${input} ${items.length + 1}`,
     };
-    setItems([...items, newItem, ...items]); // add to end
+    setItems([...items, newItem]); // add to end
     // setItems([newItem, ...items]); // use this to add to start
   };
   // 3. REMOVE ITEM
@@ -49,13 +48,14 @@ export default function App() {
       <View style={{flex:0.5,alignContent:'center',}}>
       <Text style={styles.title}>FlatList Add / Remove</Text>
 
-      <Button title="Add New Item" onPress={addItem} />
+      
       <TextInput  
         placeholder="Enter the Name:"
         style={{ fontSize: 24, margin: 12, padding: 20 }}
-        onChange={(value) => setinput(value)}
-      />
-      <Text>{input}</Text>
+        onChangeText={(value) => setinput(value)}
+      /> 
+      <Button title="Add New Item" onPress={addItem} />
+      
       <FlatList
         data={items}
         keyExtractor={(item) => item.id} // must have unique key
