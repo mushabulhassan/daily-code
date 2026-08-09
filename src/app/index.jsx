@@ -1,151 +1,108 @@
-import { Ionicons  from "@expo/vector-icons";
-import { ImageBackground } from "expo-image";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
-  Pressable,
+  Button,
+  FlatList,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
-  ScrollView
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Users from "./user";
-// import logo from '../../assets/images/react-logo@3x.png'
 export default function App() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-
-  const [hide, sethide] = useState(true);
-  function hide1() {
-    hide == true ? sethide(false) : sethide(true);
-  }
+  const [input, setinput] = useState("12");
+  // 1. State = your list data
+  const [items, setItems] = useState([
+    { id: "1", name: "Apple" },
+    { id: "2", name: "Banana" },
+    { id: "3", name: "Mango" },
+  ]);
+  // 2. ADD ITEM
+  const addItem = () => { 
+    setinput("23");
+    const newItem = {
+      id: Date.now().toString(), // unique id
+      name: `${"Apple"} ${items.length + 1}`,
+    };
+    setItems([...items, newItem, ...items]); // add to end
+    // setItems([newItem, ...items]); // use this to add to start
+  };
+  // 3. REMOVE ITEM
+  const removeItem = (id) => {
+    setItems(items.filter((item) => item.id !== id));
+  };
+  // 4. Render each item
+  const renderItem = ({ item }) => ( 
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemText}>{item.name}</Text>
+      <TouchableOpacity
+        style={styles.deleteBtn}
+        onPress={() => removeItem(item.id)}
+      >
+        <Text style={styles.deleteText}>Delete</Text>
+      </TouchableOpacity>
+    </View>
+  );
   return (
-    <ImageBackground
-      style={{
-        flex: 1,
-        height: "100%",
-        width: "100%",
-        justifyContent: "center",
-        display: "flex",
-      }}
-    >
-      <SafeAreaView style={styles.container}>
-       
-        <Text style={styles.heading}>Student Registration</Text>
-        {/* Name */}
-        {/* <Image source={logo}/> */}
-        <Text style={{ fontSize: 26 }}> User's Please enter Your Data </Text>
-        <Text style={{ fontSize: 26 }}> Last Student's Data..</Text>
-        <Users />
-        <Text style={styles.label}>Full Name</Text>
-        <View style={styles.inputContainer}>
-          <Ionicons name="person-outline" size={24} color="#6C3DD1" />
-          <TextInput
-            placeholder="Enter your full name"
-            value={name}
-            onChangeText={setName}
-            style={styles.input}
-          />
-          <Ionicons style={{ color: "red" }} size={25} name="eye-off" />
-        </View>
-        {/* Email */}
-        <Text style={styles.label}>Email Address</Text>
-        <View style={styles.inputContainer}>
-          <Ionicons name="mail-outline" size={24} color="#6C3DD1" />
-          <TextInput
-            placeholder="Enter your email"
-            keyboardType="email-address"
-            value={email}
-            onChangeText={setEmail}
-            style={styles.input}
-          />
-        </View>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>FlatList Add / Remove</Text>
 
-        <Text style={styles.label}>Enter Password</Text>
-        <View style={styles.inputContainer}>
-          <Ionicons name="lock-closed-outline" size={24} color="#6C3DD1" />
-          <TextInput
-            style={styles.input}
-            secureTextEntry={hide}
-            placeholder="Enter The Password"
-          />
-          <Ionicons
-            size={24}
-            on
-            name={hide ? "eye" : "eye-off"}
-            color="green"
-            onPress={hide1}
-          />
-        </View>
-        {/* Phone */}
-        <Text style={styles.label}>Phone Number</Text>
-        <View style={styles.inputContainer}>
-          <Ionicons name="call-outline" size={20} color="green" />
-          <TextInput
-            placeholder="Enter your phone number"
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={setPhone}
-            style={styles.input}
-          />
-        </View>
-
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </Pressable>
-      </SafeAreaView>
-    </ImageBackground>
+      <Button title="Add New Item" onPress={addItem} />
+      <TextInput  
+        placeholder="Enter the Name:"
+        style={{ fontSize: 24, margin: 12, padding: 20 }}
+        onChange={(value) => setinput(value)}
+      />
+      <Text>{input}</Text>
+      <FlatList
+        data={items}
+        keyExtractor={(item) => item.id} // must have unique key
+        renderItem={renderItem}
+        contentContainerStyle={{ paddingBottom: 20 }}
+        ListEmptyComponent={<Text style={styles.empty}>No items left</Text>}
+      />
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
     flex: 1,
     padding: 20,
-    borderWidth: 2,
-    borderColor: "yellow",
-    marginTop: 20,
+    backgroundColor: "#fff",
+    marginTop: 40,
   },
-  heading: {
-    fontSize: 28,
+  title: {
+    fontSize: 22,
     fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 30,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 8,
-    marginTop: 10,
-    textAlign: "left",
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    height: 55,
     marginBottom: 15,
+    textAlign: "center",
   },
-  input: {
-    flex: 1,
-    marginLeft: 10,
+  itemContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    marginVertical: 5,
+    backgroundColor: "#f2f2f2",
+    borderRadius: 8,
+  },
+  itemText: {
     fontSize: 16,
   },
-  button: {
-    backgroundColor: "#6C3DD1",
-    padding: 15,
-    borderRadius: 10,
-    marginTop: 20,
+  deleteBtn: {
+    backgroundColor: "red",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 5,
   },
-  buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontSize: 18,
+  deleteText: {
+    color: "#ffffff",
     fontWeight: "bold",
+  },
+  empty: {
+    textAlign: "center",
+    marginTop: 50,
+    fontSize: 16,
+    color: "gray",
   },
 });
