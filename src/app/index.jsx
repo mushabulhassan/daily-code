@@ -245,6 +245,9 @@ setTimeout(() => {
             // Update input whenever the user types.
             onChangeText={(value) => setInput(value)}
           />
+           {
+          load ? ( <View><Text>We are loading the Items..</Text><ActivityIndicator size={55} color={'gold'} animating={load}/></View> ) : null }
+
           {/* ========================================================
           ADD BUTTON
           ======================================================== */}
@@ -254,10 +257,8 @@ setTimeout(() => {
             onPress={()=> {addItem();loading();}}
           />
           {/* <ActivityIndicator size={55} color={'gold'} animating={load}/> */}
-          {
-          load ? ( <View><Text>We are loading the Items..</Text><ActivityIndicator size={55} color={'gold'} animating={load}/></View> ) : null }
-
-          <Button title="Loader" onPress={loading}/>
+         
+          {/* <Button title="Loader" onPress={loading}/> */}
           {/* ========================================================
           FLATLIST
           ======================================================== */}
