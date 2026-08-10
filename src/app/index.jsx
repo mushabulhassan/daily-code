@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { StatusBar } from "expo-status-bar";
 import {
+  ActivityIndicator,
   Button, // Creates a basic button
   FlatList,
   Keyboard,
@@ -19,6 +20,7 @@ export default function App() {
   // Stores the text entered in the main TextInput.
   // This input is used when adding a NEW item.
   const [input, setInput] = useState("");
+  const [load, setload] = useState(false)
   // Stores all items displayed in the FlatList.
   const [items, setItems] = useState([
     { id: "1", name: "Apple" },
@@ -40,6 +42,13 @@ export default function App() {
   // Apple -> user changes it to Orange
   // editText will temporarily contain "Orange"
   const [editText, setEditText] = useState("");
+  const loading =()=>{
+setload(true)
+setTimeout(() => {
+  
+  setload(false)
+}, 3000);
+  }
   // ============================================================
   // ADD ITEM
   // ============================================================
@@ -242,8 +251,13 @@ export default function App() {
           <Button
             title="Add New Item"
             // Run addItem() when the button is pressed.
-            onPress={addItem}
+            onPress={()=> {addItem();loading();}}
           />
+          {/* <ActivityIndicator size={55} color={'gold'} animating={load}/> */}
+          {
+          load ? ( <View><Text>We are loading the Items..</Text><ActivityIndicator size={55} color={'gold'} animating={load}/></View> ) : null }
+
+          <Button title="Loader" onPress={loading}/>
           {/* ========================================================
           FLATLIST
           ======================================================== */}
