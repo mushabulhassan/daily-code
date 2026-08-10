@@ -3,11 +3,15 @@ import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   Button, // Creates a basic button
-  FlatList, // Creates a pressable component // Keeps content inside the safe screen area
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView, // Creates a pressable component // Keeps content inside the safe screen area
   StyleSheet, // Used to create styles
   Text, // Displays text
   TextInput, // Allows the user to enter/edit text
-  TouchableOpacity, // Creates buttons that can be pressed
+  TouchableOpacity, TouchableWithoutFeedback, // Creates buttons that can be pressed
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,14 +19,12 @@ export default function App() {
   // Stores the text entered in the main TextInput.
   // This input is used when adding a NEW item.
   const [input, setInput] = useState("");
-
   // Stores all items displayed in the FlatList.
   const [items, setItems] = useState([
     { id: "1", name: "Apple" },
     { id: "2", name: "Banana" },
     { id: "3", name: "Mango" },
   ]);
-
   // Stores the ID of the item currently being edited.
   //
   // Example:
@@ -32,18 +34,15 @@ export default function App() {
   // If no item is being edited:
   // editingId = null
   const [editingId, setEditingId] = useState(null);
-
   // Stores the temporary text while editing an item.
   //
   // Example:
   // Apple -> user changes it to Orange
   // editText will temporarily contain "Orange"
   const [editText, setEditText] = useState("");
-
   // ============================================================
   // ADD ITEM
   // ============================================================
-
   const addItem = () => {
     // Check if the input is empty.
     //
@@ -52,39 +51,31 @@ export default function App() {
     if (input.trim() === "") {
       return;
     }
-
     // Create a new object for the new list item.
     const newItem = {
       // Date.now() gives the current time in milliseconds.
       // toString() converts that number into a string.
       // This gives our new item a unique ID.
       id: Date.now().toString(),
-
       // Store the user's input as the item's name.
       name: input.trim(),
     };
-
     // Add the new item to the existing items array.
     setItems([...items, newItem]);
-
     // Clear the main TextInput after adding the item.
     setInput("");
   };
-
   // ============================================================
   // REMOVE ITEM
   // ============================================================
-
   const removeItem = (id) => {
     // filter() creates a new array containing every item
     // except the item whose ID matches the given ID.
     setItems(items.filter((item) => item.id !== id));
   };
-
   // ============================================================
   // START EDITING AN ITEM
   // ============================================================
-
   const startEditing = (item) => {
     // Save the ID of the item we want to edit.
     //
@@ -92,24 +83,20 @@ export default function App() {
     // If Apple has id "1":
     // editingId becomes "1"
     setEditingId(item.id);
-
     // Put the current item name into the editing TextInput.
     //
     // Example:
     // Apple -> editText = "Apple"
     setEditText(item.name);
   };
-
   // ============================================================
   // SAVE EDITED ITEM
   // ============================================================
-
   const saveEdit = (id) => {
     // Don't save an empty item.
     if (editText.trim() === "") {
       return;
     }
-
     // map() creates a new array.
     //
     // We check every item:
@@ -126,40 +113,31 @@ export default function App() {
           name: editText.trim(),
         };
       }
-
       // Return the unchanged item.
       return item;
     });
-
     // Replace the old items array with the updated array.
     setItems(updatedItems);
-
     // Stop editing.
     //
     // Setting editingId to null means:
     // "No item is currently being edited."
     setEditingId(null);
-
     // Clear the editing TextInput state.
     setEditText("");
   };
-
   // ============================================================
   // CANCEL EDITING
   // ============================================================
-
   const cancelEdit = () => {
     // Stop editing the current item.
     setEditingId(null);
-
     // Clear the temporary editing text.
     setEditText("");
   };
-
   // ============================================================
   // RENDER EACH ITEM
   // ============================================================
-
   const renderItem = ({ item }) => (
     // Container for one list item.
     <View style={styles.itemContainer}>
@@ -169,7 +147,6 @@ export default function App() {
           // ======================================================
           // EDIT MODE
           // ======================================================
-
           <View style={styles.editContainer}>
             {/* TextInput used to edit the item name */}
             <TextInput
@@ -179,7 +156,6 @@ export default function App() {
               // Update editText whenever the user types.
               onChangeText={(value) => setEditText(value)}
             />
-
             {/* SAVE BUTTON */}
             <TouchableOpacity
               style={styles.saveBtn}
@@ -188,7 +164,6 @@ export default function App() {
             >
               <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
-
             {/* CANCEL BUTTON */}
             <TouchableOpacity
               style={styles.cancelBtn}
@@ -242,52 +217,53 @@ export default function App() {
         barStyle="dark-content"
         backgroundColor="black"
       />
-      {/* <StatusBar barStyle="light-content" backgroundColor='whitek'/> */}
-      {/* Screen title */}
-      <Text style={styles.title}>FlatList Add / Edit / Remove</Text>
-
-      {/* ========================================================
+      <KeyboardAvoidingView behavior={Platform.OS==="ios"?'padding':'undefined'}>
+        {/* <StatusBar barStyle="light-content" backgroundColor='whitek'/> */}
+        {/* Screen title */}
+         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView>
+          {" "}
+          <Text style={styles.title}>FlatList Add / Edit / Remove</Text>
+          {/* ========================================================
           NEW ITEM INPUT
           ======================================================== */}
-
-      <TextInput
-        placeholder="Enter the Name:"
-        style={styles.input}
-        // Controlled input:
-        // The TextInput displays whatever is inside "input".
-        value={input}
-        // Update input whenever the user types.
-        onChangeText={(value) => setInput(value)}
-      />
-
-      {/* ========================================================
+          <TextInput
+            placeholder="Enter the Name:"
+            style={styles.input}
+            // Controlled input:
+            // The TextInput displays whatever is inside "input".
+            value={input}
+            // Update input whenever the user types.
+            onChangeText={(value) => setInput(value)}
+          />
+          {/* ========================================================
           ADD BUTTON
           ======================================================== */}
-
-      <Button
-        title="Add New Item"
-        // Run addItem() when the button is pressed.
-        onPress={addItem}
-      />
-
-      {/* ========================================================
+          <Button
+            title="Add New Item"
+            // Run addItem() when the button is pressed.
+            onPress={addItem}
+          />
+          {/* ========================================================
           FLATLIST
           ======================================================== */}
-
-      <FlatList
-        // The array that FlatList will display.
-        data={items}
-        // Give every item its unique key.
-        keyExtractor={(item) => item.id}
-        // Tell FlatList how to display each item.
-        renderItem={renderItem}
-        // Add some space at the bottom of the list.
-        contentContainerStyle={{
-          paddingBottom: 20,
-        }}
-        // This appears when the list contains no items.
-        ListEmptyComponent={<Text style={styles.empty}>No items left</Text>}
-      />
+          <FlatList
+            // The array that FlatList will display.
+            data={items}
+            // Give every item its unique key.
+            keyExtractor={(item) => item.id}
+            // Tell FlatList how to display each item.
+            renderItem={renderItem}
+            // Add some space at the bottom of the list.
+            contentContainerStyle={{
+              paddingBottom: 20,
+            }}
+            // This appears when the list contains no items.
+            ListEmptyComponent={<Text style={styles.empty}>No items left</Text>}
+          />
+        </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
