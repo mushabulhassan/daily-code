@@ -9,18 +9,24 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView, // Creates a pressable component // Keeps content inside the safe screen area
-  StyleSheet, // Used to create styles
-  Text, // Displays text
+  StyleSheet,
+  Switch, // Used to create styles
+  Text,
+  Modal, // Displays text
   TextInput, // Allows the user to enter/edit text
-  TouchableOpacity, TouchableWithoutFeedback, // Creates buttons that can be pressed
+  TouchableOpacity,
+  TouchableWithoutFeedback, // Creates buttons that can be pressed
   View,
+  Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 export default function App() {
   // Stores the text entered in the main TextInput.
   // This input is used when adding a NEW item.
+  const [editModal, setEditModal] = useState(false);
+const [editT, setEditT] = useState('');
   const [input, setInput] = useState("");
-  const [load, setload] = useState(false)
+  const [load, setload] = useState(false);
   // Stores all items displayed in the FlatList.
   const [items, setItems] = useState([
     { id: "1", name: "Apple" },
@@ -36,19 +42,22 @@ export default function App() {
   // If no item is being edited:
   // editingId = null
   const [editingId, setEditingId] = useState(null);
+
+  const cgm =()=>{
+    setEditModal(true)
+  }
   // Stores the temporary text while editing an item.
   //
   // Example:
   // Apple -> user changes it to Orange
   // editText will temporarily contain "Orange"
   const [editText, setEditText] = useState("");
-  const loading =()=>{
-setload(true)
-setTimeout(() => {
-  
-  setload(false)
-}, 3000);
-  }
+  const loading = () => {
+    setload(true);
+    setTimeout(() => {
+      setload(false);
+    }, 1000);
+  };
   // ============================================================
   // ADD ITEM
   // ============================================================
@@ -226,57 +235,101 @@ setTimeout(() => {
         barStyle="dark-content"
         backgroundColor="black"
       />
-      <KeyboardAvoidingView behavior={Platform.OS==="ios"?'padding':'undefined'}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "undefined"}
+      >
         {/* <StatusBar barStyle="light-content" backgroundColor='whitek'/> */}
         {/* Screen title */}
-         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView>
-          {" "}
-          <Text style={styles.title}>FlatList Add / Edit / Remove</Text>
-          {/* ========================================================
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView>
+            {" "}
+            <Text style={styles.title}>FlatList Add / Edit / Remove</Text>
+            {/* ========================================================
           NEW ITEM INPUT
           ======================================================== */}
-          <TextInput
-            placeholder="Enter the Name:"
-            style={styles.input}
-            // Controlled input:
-            // The TextInput displays whatever is inside "input".
-            value={input}
-            // Update input whenever the user types.
-            onChangeText={(value) => setInput(value)}
-          />
-           {
-          load ? ( <View><Text>We are loading the Items..</Text><ActivityIndicator size={55} color={'gold'} animating={load}/></View> ) : null }
-
-          {/* ========================================================
+            <TextInput
+              placeholder="Enter the Name:"
+              style={styles.input}
+              // Controlled input:
+              // The TextInput displays whatever is inside "input".
+              value={input}
+              // Update input whenever the user types.
+              onChangeText={(value) => setInput(value)}
+            />
+            <View
+              style={{
+                backgroundColor: "green",
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingHorizontal: 20,
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>18+</Text>
+              <Switch
+                style={{ marginTop: 10, marginBottom: 10 }}
+                value={load}
+                onValueChange={<Text> alert('Yaa I am pressed')</Text>}
+                trackColor={{ false: "#767577", true: "#lightblue" }}
+                thumbColor={"red"}
+              />
+            </View>
+            {load && (
+              <View>
+                <Text>We are loading the Items..</Text>
+                <ActivityIndicator
+                  size={"large"}
+                  color={"gold"}
+                  animating={load}
+                />
+              </View>
+            )}
+            {/* ========================================================
           ADD BUTTON
           ======================================================== */}
-          <Button
-            title="Add New Item"
-            // Run addItem() when the button is pressed.
-            onPress={()=> {addItem();loading();}}
-          />
-          {/* <ActivityIndicator size={55} color={'gold'} animating={load}/> */}
-         
-          {/* <Button title="Loader" onPress={loading}/> */}
-          {/* ========================================================
+            <Button
+              title="Add New Item"
+              // Run addItem() when the button is pressed.
+              onPress={() => {
+                addItem();
+                loading();
+              }}
+            />
+            <Modal visible={editModal} animationType="slide" transparent={true}>
+  <View style={{flex:1, justifyContent:'center', backgroundColor:'#000000aa'}}>
+    <View style={{backgroundColor:'#fff', margin:20, padding:20, borderRadius:10}}>
+      <Text style={{color:'black'}}>Edit Item</Text>
+      <TextInput value={editT} onChangeText={setEditT} />
+      <Button title="Save" onPress={() => { saveEdit(); setEditModal(false); }} />
+      <Button title="Cancel" onPress={() => setEditModal(false)} />
+    </View>
+  </View>
+</Modal>
+<Pressable style={styles.editBtn} onPress={cgm}><Text>Modal</Text></Pressable>
+            {/* <ActivityIndicator size={55} color={'gold'} animating={load}/> */}
+            {/* <Button title="Loader" onPress={loading}/> */}
+            {/* ========================================================
           FLATLIST
           ======================================================== */}
-          <FlatList
-            // The array that FlatList will display.
-            data={items}
-            // Give every item its unique key.
-            keyExtractor={(item) => item.id}
-            // Tell FlatList how to display each item.
-            renderItem={renderItem}
-            // Add some space at the bottom of the list.
-            contentContainerStyle={{
-              paddingBottom: 20,
-            }}
-            // This appears when the list contains no items.
-            ListEmptyComponent={<Text style={styles.empty}>No items left</Text>}
-          />
-        </ScrollView>
+            <FlatList
+              // The array that FlatList will display.
+              data={items}
+              // Give every item its unique key.
+              keyExtractor={(item) => item.id}
+              // Tell FlatList how to display each item.
+              renderItem={renderItem}
+              // Add some space at the bottom of the list.
+              contentContainerStyle={{
+                paddingBottom: 20,
+              }}
+              // This appears when the list contains no items.
+              ListEmptyComponent={
+                <Text style={styles.empty}>No items left</Text>
+              }
+            />
+
+
+          </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>
