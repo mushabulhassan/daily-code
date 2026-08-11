@@ -305,7 +305,8 @@ const [editT, setEditT] = useState('');
     </View>
   </View>
 </Modal>
-<Pressable style={styles.editBtn} onPress={cgm}><Text>Modal</Text></Pressable>
+<Pressable style={styles.editBtn} onPress={cgm}><Text>Open Modal</Text></Pressable>
+<Text style={styles.itemContainer}>Yoour List is Here</Text>
             {/* <ActivityIndicator size={55} color={'gold'} animating={load}/> */}
             {/* <Button title="Loader" onPress={loading}/> */}
             {/* ========================================================
@@ -327,7 +328,7 @@ const [editT, setEditT] = useState('');
                 <Text style={styles.empty}>No items left</Text>
               }
             />
-
+<Text>{editT}</Text>
 
           </ScrollView>
         </TouchableWithoutFeedback>
