@@ -17,6 +17,7 @@ export default function App() {
         <View style={styles.screen}>
           <Text style={styles.title}>Home</Text>
           <Text>Welcome to Home Screen</Text>
+          <Text style={{fontSize:25,}}>Here U can See Your Prfile Look</Text>
         </View>
       );
     }
@@ -26,6 +27,7 @@ export default function App() {
         <View style={styles.screen}>
           <Text style={styles.title}>Search</Text>
           <Text>This is the Search Screen</Text>
+          <Text>Here U  CAN SEarch THEse </Text>
         </View>
       );
     }
