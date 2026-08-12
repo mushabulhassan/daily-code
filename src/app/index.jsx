@@ -1,88 +1,125 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+} from "react-native";
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-
-// Create Bottom Tab Navigator
-const Tab = createBottomTabNavigator();
-
-
-// Home Screen
-function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
-      <Text>Welcome to Home</Text>
-    </View>
-  );
-}
-
-
-// Search Screen
-function SearchScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Search</Text>
-      <Text>Welcome to Search</Text>
-    </View>
-  );
-}
-
-
-// Cart Screen
-function CartScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Cart</Text>
-      <Text>Welcome to Cart</Text>
-    </View>
-  );
-}
-
-
-// Profile Screen
-function ProfileScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
-      <Text>Welcome to Profile</Text>
-    </View>
-  );
-}
-
-
-// Main App
 export default function App() {
+  // Keeps track of which tab is currently selected
+  const [activeTab, setActiveTab] = useState("Home");
+
+  // Function that displays the correct screen
+  function renderScreen() {
+    if (activeTab === "Home") {
+      return (
+        <View style={styles.screen}>
+          <Text style={styles.title}>Home</Text>
+          <Text>Welcome to Home Screen</Text>
+        </View>
+      );
+    }
+
+    if (activeTab === "Search") {
+      return (
+        <View style={styles.screen}>
+          <Text style={styles.title}>Search</Text>
+          <Text>This is the Search Screen</Text>
+        </View>
+      );
+    }
+
+    if (activeTab === "Cart") {
+      return (
+        <View style={styles.screen}>
+          <Text style={styles.title}>Cart</Text>
+          <Text>This is the Cart Screen</Text>
+        </View>
+      );
+    }
+
+    if (activeTab === "Profile") {
+      return (
+        <View style={styles.screen}>
+          <Text style={styles.title}>Profile</Text>
+          <Text>This is the Profile Screen</Text>
+        </View>
+      );
+    }
+  }
+
   return (
-    <NavigationContainer>
+    <View style={styles.container}>
 
-      <Tab.Navigator>
+      {/* Current screen */}
+      {renderScreen()}
 
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-        />
+      {/* Bottom Tab Bar */}
+      <View style={styles.tabBar}>
 
-        <Tab.Screen
-          name="Search"
-          component={SearchScreen}
-        />
+        {/* Home */}
+        <Pressable
+          style={styles.tab}
+          onPress={() => setActiveTab("Home")}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              activeTab === "Home" && styles.activeText,
+            ]}
+          >
+            Home
+          </Text>
+        </Pressable>
 
-        <Tab.Screen
-          name="Cart"
-          component={CartScreen}
-        />
+        {/* Search */}
+        <Pressable
+          style={styles.tab}
+          onPress={() => setActiveTab("Search")}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              activeTab === "Search" && styles.activeText,
+            ]}
+          >
+            Search
+          </Text>
+        </Pressable>
 
-        <Tab.Screen
-          name="Profile"
-          component={ProfileScreen}
-        />
+        {/* Cart */}
+        <Pressable
+          style={styles.tab}
+          onPress={() => setActiveTab("Cart")}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              activeTab === "Cart" && styles.activeText,
+            ]}
+          >
+            Cart
+          </Text>
+        </Pressable>
 
-      </Tab.Navigator>
+        {/* Profile */}
+        <Pressable
+          style={styles.tab}
+          onPress={() => setActiveTab("Profile")}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              activeTab === "Profile" && styles.activeText,
+            ]}
+          >
+            Profile
+          </Text>
+        </Pressable>
 
-    </NavigationContainer>
+      </View>
+    </View>
   );
 }
 
@@ -90,6 +127,10 @@ export default function App() {
 // Styles
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+
+  screen: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -99,5 +140,28 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+
+  tabBar: {
+    height: 70,
+    flexDirection: "row",
+    borderTopWidth: 1,
+    borderTopColor: "#ddd",
+    backgroundColor: "white",
+  },
+
+  tab: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  tabText: {
+    fontSize: 14,
+  },
+
+  activeText: {
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
