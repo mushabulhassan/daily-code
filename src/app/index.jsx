@@ -1,10 +1,15 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  NavigationIndependentTree,
+} from "@react-navigation/native";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-// Create the Stack Navigator
+
+// Create Stack Navigator
 const Stack = createNativeStackNavigator();
 
 
@@ -41,21 +46,27 @@ function DetailsScreen({ navigation }) {
 // APP
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
+    <NavigationIndependentTree>
 
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-        />
+      <NavigationContainer>
 
-        <Stack.Screen
-          name="Details"
-          component={DetailsScreen}
-        />
+        <Stack.Navigator>
 
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+          />
+
+          <Stack.Screen
+            name="Details"
+            component={DetailsScreen}
+          />
+
+        </Stack.Navigator>
+
+      </NavigationContainer>
+
+    </NavigationIndependentTree>
   );
 }
 
