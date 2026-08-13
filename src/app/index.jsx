@@ -1,169 +1,75 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-} from "react-native";
+import React from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
 
-export default function App() {
-  // Keeps track of which tab is currently selected
-  const [activeTab, setActiveTab] = useState("Home");
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-  // Function that displays the correct screen
-  function renderScreen() {
-    if (activeTab === "Home") {
-      return (
-        <View style={styles.screen}>
-          <Text style={styles.title}>Home</Text>
-          <Text>Welcome to Home Screen</Text>
-          <Text style={{fontSize:25,}}>Here U can See Your Prfile Look</Text>
-        </View>
-      );
-    }
+// Create the Stack Navigator
+const Stack = createNativeStackNavigator();
 
-    if (activeTab === "Search") {
-      return (
-        <View style={styles.screen}>
-          <Text style={styles.title}>Search</Text>
-          <Text>This is the Search Screen</Text>
-          <Text>Here U  CAN SEarch THEse </Text>
-        </View>
-      );
-    }
 
-    if (activeTab === "Cart") {
-      return (
-        <View style={styles.screen}>
-          <Text style={styles.title}>Cart</Text>
-          <Text>This is the Cart Screen</Text>
-        </View>
-      );
-    }
-
-    if (activeTab === "Profile") {
-      return (
-        <View style={styles.screen}>
-          <Text style={styles.title}>Profile</Text>
-          <Text>This is the Profile Screen</Text>
-        </View>
-      );
-    }
-  }
-
+// HOME SCREEN
+function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Home Screen</Text>
 
-      {/* Current screen */}
-      {renderScreen()}
-
-      {/* Bottom Tab Bar */}
-      <View style={styles.tabBar}>
-
-        {/* Home */}
-        <Pressable
-          style={styles.tab}
-          onPress={() => setActiveTab("Home")}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "Home" && styles.activeText,
-            ]}
-          >
-            Home
-          </Text>
-        </Pressable>
-
-        {/* Search */}
-        <Pressable
-          style={styles.tab}
-          onPress={() => setActiveTab("Search")}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "Search" && styles.activeText,
-            ]}
-          >
-            Search
-          </Text>
-        </Pressable>
-
-        {/* Cart */}
-        <Pressable
-          style={styles.tab}
-          onPress={() => setActiveTab("Cart")}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "Cart" && styles.activeText,
-            ]}
-          >
-            Cart
-          </Text>
-        </Pressable>
-
-        {/* Profile */}
-        <Pressable
-          style={styles.tab}
-          onPress={() => setActiveTab("Profile")}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              activeTab === "Profile" && styles.activeText,
-            ]}
-          >
-            Profile
-          </Text>
-        </Pressable>
-
-      </View>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate("Details")}
+      />
     </View>
   );
 }
 
 
-// Styles
+// DETAILS SCREEN
+function DetailsScreen({ navigation }) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Details Screen</Text>
+
+      <Button
+        title="Go Back"
+        onPress={() => navigation.goBack()}
+      />
+    </View>
+  );
+}
+
+
+// APP
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+        />
+
+        <Stack.Screen
+          name="Details"
+          component={DetailsScreen}
+        />
+
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+
+// STYLES
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-
-  screen: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
 
   title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-
-  tabBar: {
-    height: 70,
-    flexDirection: "row",
-    borderTopWidth: 1,
-    borderTopColor: "#ddd",
-    backgroundColor: "white",
-  },
-
-  tab: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  tabText: {
-    fontSize: 14,
-  },
-
-  activeText: {
-    fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 25,
+    marginBottom: 20,
   },
 });
