@@ -1,86 +1,97 @@
-import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
-
+import * as React from 'react';
 import {
-  NavigationContainer,
-  NavigationIndependentTree,
-} from "@react-navigation/native";
+  createStaticNavigation,
+ 
+} from '@react-navigation/native';
+import { View, Platform } from 'react-native';
+import { useLinkBuilder, useTheme } from '@react-navigation/native';
+import { Text, PlatformPressable } from '@react-navigation/elements';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+function MyTabBar({ state, descriptors, navigation }) {
+  const { colors } = useTheme();
+  const { buildHref } = useLinkBuilder();
 
-
-// Create Stack Navigator
-const Stack = createNativeStackNavigator();
-
-
-// HOME SCREEN
-function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Home Screen</Text>
+    <View style={{ flexDirection: 'row' }}>
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+              ? options.title
+              : route.name;
 
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate("Details")}
-      />
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name, route.params);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: route.key,
+          });
+        };
+
+        return (
+          <PlatformPressable
+            key={route.key}
+            href={buildHref(route.name, route.params)}
+            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarButtonTestID}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={{ flex: 1 }}
+          >
+            <Text style={{ color: isFocused ? colors.primary : colors.text }}>
+              {label}
+            </Text>
+          </PlatformPressable>
+        );
+      })}
     </View>
   );
 }
 
 
-// DETAILS SCREEN
-function DetailsScreen({ navigation }) {
+function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Details Screen</Text>
-
-      <Button
-        title="Go Back"
-        onPress={() => navigation.goBack()}
-      />
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
     </View>
   );
 }
 
-
-// APP
-export default function App() {
+function ProfileScreen() {
   return (
-    <NavigationIndependentTree>
-
-      <NavigationContainer>
-
-        <Stack.Navigator>
-
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-          />
-
-          <Stack.Screen
-            name="Details"
-            component={DetailsScreen}
-          />
-
-        </Stack.Navigator>
-
-      </NavigationContainer>
-
-    </NavigationIndependentTree>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Profile Screen</Text>
+    </View>
   );
 }
 
-
-// STYLES
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  title: {
-    fontSize: 25,
-    marginBottom: 20,
+const MyTabs = createBottomTabNavigator({
+  tabBar: (props) => <MyTabBar {...props} />,
+  screens: {
+    Home: HomeScreen,
+    Profile: ProfileScreen,
   },
 });
+
+const Navigation = createStaticNavigation(MyTabs);
+
+export default function App() {
+  return <Navigation />;
+}
