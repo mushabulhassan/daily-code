@@ -2,104 +2,70 @@ import 'react-native-gesture-handler';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Ionicons } from '@expo/vector-icons';
 
 // ---------- SCREENS ----------
 
-function HomeScreen({ navigation }) {
+function ProductListScreen({ navigation }) {
+  const products = [
+    { id: 1, name: 'Laptop', price: 800 },
+    { id: 2, name: 'Phone', price: 500 },
+  ];
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Home Screen</Text>
-      <Button title="Go to Details" onPress={() => navigation.navigate('Details')} />
-      <Button title="Open Drawer Menu" onPress={() => navigation.openDrawer()} />
-      <Button title=" Settings Tab" onPress={() => navigation.navigate('SettingsTab')} />
-      <Button title="Profile Tab" onPress={() => navigation.navigate('Profile')} />
+      <Text style={styles.title}>Product List</Text>
+      {products.map((product) => (
+        <Button
+          key={product.id}
+          title={product.name}
+          onPress={() =>
+            navigation.navigate('ProductDetail', {
+              productId: product.id,
+              productName: product.name,
+              productPrice: product.price,
+            })
+          }
+        />
+      ))}
     </View>
   );
 }
 
-function DetailsScreen({ navigation }) {
+function ProductDetailScreen({ route, navigation }) {
+  const { productId, productName, productPrice } = route.params;
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Details Screen</Text>
+      <Text style={styles.title}>{productName}</Text>
+      <Text>ID: {productId}</Text>
+      <Text>Price: ${productPrice}</Text>
       <Button title="Go Back" onPress={() => navigation.goBack()} />
     </View>
   );
 }
 
-function ProfileScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Profile Screen</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Settings Screen</Text>
-    </View>
-  );
-}
-
-// ---------- NAVIGATORS ----------
+// ---------- NAVIGATOR ----------
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
-const Drawer = createDrawerNavigator();
 
-// Stack: Home -> Details
-function HomeStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="HomeMain" component={HomeScreen} options={{ title: 'Home' }} />
-      <Stack.Screen name="Details" component={DetailsScreen} />
-    </Stack.Navigator>
-  );
-}
-
-// Bottom Tabs: Home, Profile & Settings
-function Tabs() {
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: true,
-        tabBarIcon: ({ color, size }) => {
-          const icons = {
-            HomeTab: 'home',
-            Profile: 'person',
-            SettingsTab: 'settings',
-          };
-          return <Ionicons name={icons[route.name]} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: '#880606',
-        tabBarInactiveTintColor: 'gray',
-      })}
-    >
-      <Tab.Screen name="HomeTab" component={HomeStack} options={{ title: 'Home12' }} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="SettingsTab" component={SettingsScreen} options={{ title: 'Settings' }} />
-    </Tab.Navigator>
-  );
-}
-
-// ---------- MA,IN APP: Drawer wraps everything ----------
+// ---------- MAIN APP ----------
 
 export default function App() {
   return (
+     
+      <Stack.Navigator initialRouteName="ProductList">
+        <Stack.Screen
+          name="ProductList"
+          component={ProductListScreen}
+          options={{ title: 'Products' }}
+        />
+        <Stack.Screen
+          name="ProductDetail"
+          component={ProductDetailScreen}
+          options={{ title: 'Product Details' }}
+        />
+      </Stack.Navigator>
  
-      <Drawer.Navigator
-        screenOptions={{ headerShown: true }}
-        initialRouteName="Home"
-      >
-        <Drawer.Screen name="Home" component={Tabs} />
-        <Drawer.Screen name="Settings" component={SettingsScreen} />
-        <Drawer.Screen name="Profile" component={ProfileScreen} />
-      </Drawer.Navigator>
-    
   );
 }
 
@@ -111,11 +77,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 15,
+    padding: 20,
   },
   title: {
-    fontSize: 40,
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
-    color:'blue'
   },
 });
