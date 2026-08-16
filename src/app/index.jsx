@@ -14,8 +14,8 @@ function HomeScreen({ navigation }) {
       <Text style={styles.title}>Home Screen</Text>
       <Button title="Go to Details" onPress={() => navigation.navigate('Details')} />
       <Button title="Open Drawer Menu" onPress={() => navigation.openDrawer()} />
-      <Button title="Open Settings" onPress={() => navigation.navigate('SettingsTab')} />
-      <Button title="Profile" onPress={() => navigation.navigate('Profile')} />
+      <Button title=" Settings Tab" onPress={() => navigation.navigate('SettingsTab')} />
+      <Button title="Profile Tab" onPress={() => navigation.navigate('Profile')} />
     </View>
   );
 }
@@ -86,7 +86,7 @@ function Tabs() {
   );
 }
 
-// ---------- MAIN APP: Drawer wraps everything ----------
+// ---------- MA,IN APP: Drawer wraps everything ----------
 
 export default function App() {
   return (
@@ -113,8 +113,9 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   title: {
-    fontSize: 22,
+    fontSize: 40,
     fontWeight: 'bold',
     marginBottom: 10,
+    color:'blue'
   },
 });
