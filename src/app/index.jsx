@@ -1,160 +1,120 @@
-import * as React from 'react';
-import { View } from 'react-native';
-
-import {
-  createStaticNavigation,
-  NavigationIndependentTree,
-  useLinkBuilder,
-  useTheme,
-} from '@react-navigation/native';
-
-import { Text, PlatformPressable } from '@react-navigation/elements';
+import 'react-native-gesture-handler';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Ionicons } from '@expo/vector-icons';
 
+// ---------- SCREENS ----------
 
-// -------------------------
-// Custom Tab Bar
-// -------------------------
-function MyTabBar({ state, descriptors, navigation }) {
-  const { colors } = useTheme();
-  const { buildHref } = useLinkBuilder();
-
+function HomeScreen({ navigation }) {
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        height: 60,
-      }}
-    >
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-              ? options.title
-              : route.name;
-
-        const isFocused = state.index === index;
-
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name, route.params);
-          }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
-
-        return (
-          <PlatformPressable
-            key={route.key}
-            href={buildHref(route.name, route.params)}
-            accessibilityState={
-              isFocused ? { selected: true } : {}
-            }
-            accessibilityLabel={
-              options.tabBarAccessibilityLabel
-            }
-            testID={options.tabBarButtonTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text
-              style={{
-                color: isFocused
-                  ? colors.primary
-                  : colors.text,
-              }}
-            >
-              {label}
-            </Text>
-          </PlatformPressable>
-        );
-      })}
+    <View style={styles.container}>
+      <Text style={styles.title}>Home Screen</Text>
+      <Button title="Go to Details" onPress={() => navigation.navigate('Details')} />
+      <Button title="Open Drawer Menu" onPress={() => navigation.openDrawer()} />
+      <Button title="Open Settings" onPress={() => navigation.navigate('SettingsTab')} />
+      <Button title="Profile" onPress={() => navigation.navigate('Profile')} />
     </View>
   );
 }
 
-
-// -------------------------
-// Home Screen
-// -------------------------
-function HomeScreen() {
+function DetailsScreen({ navigation }) {
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Text>Home Screen</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Details Screen</Text>
+      <Button title="Go Back" onPress={() => navigation.goBack()} />
     </View>
   );
 }
 
-
-// -------------------------
-// Profile Screen
-// -------------------------
 function ProfileScreen() {
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Text>Profile Screen</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Profile Screen</Text>
     </View>
   );
 }
 
-
-// -------------------------
-// Bottom Tab Navigator
-// -------------------------
-const MyTabs = createBottomTabNavigator({
-  tabBar: (props) => <MyTabBar {...props} />,
-
-  screens: {
-    Home: HomeScreen,
-    Profile: ProfileScreen,
-  },
-});
-
-
-// -------------------------
-// Static Navigation
-// -------------------------
-const Navigation = createStaticNavigation(MyTabs);
-
-
-// -------------------------
-// App
-// -------------------------
-export default function App() {
+function SettingsScreen() {
   return (
-    <NavigationIndependentTree>
-      <Navigation />
-    </NavigationIndependentTree>
+    <View style={styles.container}>
+      <Text style={styles.title}>Settings Screen</Text>
+    </View>
   );
 }
+
+// ---------- NAVIGATORS ----------
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
+
+// Stack: Home -> Details
+function HomeStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="HomeMain" component={HomeScreen} options={{ title: 'Home' }} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
+    </Stack.Navigator>
+  );
+}
+
+// Bottom Tabs: Home, Profile & Settings
+function Tabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: true,
+        tabBarIcon: ({ color, size }) => {
+          const icons = {
+            HomeTab: 'home',
+            Profile: 'person',
+            SettingsTab: 'settings',
+          };
+          return <Ionicons name={icons[route.name]} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: '#880606',
+        tabBarInactiveTintColor: 'gray',
+      })}
+    >
+      <Tab.Screen name="HomeTab" component={HomeStack} options={{ title: 'Home12' }} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="SettingsTab" component={SettingsScreen} options={{ title: 'Settings' }} />
+    </Tab.Navigator>
+  );
+}
+
+// ---------- MAIN APP: Drawer wraps everything ----------
+
+export default function App() {
+  return (
+ 
+      <Drawer.Navigator
+        screenOptions={{ headerShown: true }}
+        initialRouteName="Home"
+      >
+        <Drawer.Screen name="Home" component={Tabs} />
+        <Drawer.Screen name="Settings" component={SettingsScreen} />
+        <Drawer.Screen name="Profile" component={ProfileScreen} />
+      </Drawer.Navigator>
+    
+  );
+}
+
+// ---------- STYLES ----------
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 15,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+});
